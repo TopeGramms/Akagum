@@ -181,7 +181,7 @@ const Dashboard: React.FC = () => {
           </div>
           
           <div className="space-y-4">
-            {goals.slice(0, 3).map((goal, index) => (
+            {goals.slice(0, 3).map((goal) => (
               <div key={goal.id} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-gray-900">{goal.name}</span>
@@ -215,7 +215,7 @@ const Dashboard: React.FC = () => {
           </div>
           
           <div className="space-y-3">
-            {transactions.slice(0, 5).map((transaction, index) => (
+            {transactions.slice(0, 5).map((transaction) => (
               <div key={transaction.id} className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center ${

@@ -26,7 +26,6 @@ const Dashboard: React.FC = () => {
   } = useChiefTightHand();
 
   const totalSavings = getTotalSavings();
-  const activeGoals = goals.length;
   const lockedVaults = goals.filter(g => g.is_locked).length;
 
   // Calculate Sapa Meter level

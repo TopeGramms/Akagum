@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Target, Shield, Unlock, Flame } from 'lucide-react';
+import { Plus, Target, Shield, Unlock } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useSavingsGoals } from '../hooks/useSavingsGoals';
 import { useChiefTightHand } from '../hooks/useChiefTightHand';
@@ -80,7 +80,7 @@ const SavingsGoals: React.FC = () => {
     }
   };
 
-  const handleAddMoney = async (goalId: string) => {
+  const handleAddMoney = async () => {
     // This would open a modal to add money
     // For now, just trigger an achievement message
     triggerAchievement("Ehen! That's the spirit! Keep feeding that vault! 💪");

@@ -1,0 +1,208 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { PlusCircle, TrendingUp, Target, Wallet, Eye, EyeOff } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+
+const Dashboard: React.FC = () => {
+  const [showBalance, setShowBalance] = React.useState(true);
+
+  const savingsData = [
+    { month: 'Jan', amount: 50000 },
+    { month: 'Feb', amount: 75000 },
+    { month: 'Mar', amount: 120000 },
+    { month: 'Apr', amount: 180000 },
+    { month: 'May', amount: 250000 },
+    { month: 'Jun', amount: 320000 },
+  ];
+
+  const goalsData = [
+    { name: 'Emergency Fund', value: 65, color: '#22c55e' },
+    { name: 'New Car', value: 35, color: '#3b82f6' },
+    { name: 'Vacation', value: 80, color: '#f59e0b' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-4">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Good morning, Adebayo!</h1>
+            <p className="text-gray-600">Let's check your savings progress</p>
+          </div>
+          <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
+            <span className="text-white font-semibold text-lg">A</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Balance Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="gradient-bg rounded-2xl p-6 text-white mb-6 relative overflow-hidden"
+      >
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="text-white/80 text-sm">Total Savings</p>
+              <div className="flex items-center gap-3">
+                <h2 className="text-3xl font-bold">
+                  {showBalance ? '₦320,000' : '₦***,***'}
+                </h2>
+                <button
+                  onClick={() => setShowBalance(!showBalance)}
+                  className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+                >
+                  {showBalance ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-white/80 text-sm">This Month</p>
+              <p className="text-xl font-semibold">+₦70,000</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2 text-sm">
+            <TrendingUp size={16} />
+            <span>+12.5% from last month</span>
+          </div>
+        </div>
+        
+        {/* Background decoration */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-12 -translate-x-12"></div>
+      </motion.div>
+
+      {/* Quick Actions */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="grid grid-cols-2 gap-4 mb-6"
+      >
+        <button className="card text-center hover:shadow-lg transition-all duration-200">
+          <PlusCircle className="w-8 h-8 text-primary-600 mx-auto mb-2" />
+          <span className="font-medium text-gray-900">Add Money</span>
+        </button>
+        <button className="card text-center hover:shadow-lg transition-all duration-200">
+          <Target className="w-8 h-8 text-primary-600 mx-auto mb-2" />
+          <span className="font-medium text-gray-900">New Goal</span>
+        </button>
+      </motion.div>
+
+      {/* Savings Progress Chart */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="card mb-6"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">Savings Progress</h3>
+          <span className="text-sm text-gray-500">Last 6 months</span>
+        </div>
+        <div className="h-48">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={savingsData}>
+              <XAxis dataKey="month" axisLine={false} tickLine={false} />
+              <YAxis hide />
+              <Line 
+                type="monotone" 
+                dataKey="amount" 
+                stroke="#22c55e" 
+                strokeWidth={3}
+                dot={{ fill: '#22c55e', strokeWidth: 2, r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </motion.div>
+
+      {/* Active Goals */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="card mb-6"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">Active Goals</h3>
+          <button className="text-primary-600 text-sm font-medium">View All</button>
+        </div>
+        
+        <div className="space-y-4">
+          {[
+            { name: 'Emergency Fund', current: 130000, target: 200000, color: 'bg-primary-500' },
+            { name: 'New Car', current: 350000, target: 1000000, color: 'bg-blue-500' },
+            { name: 'Vacation', current: 80000, target: 100000, color: 'bg-yellow-500' },
+          ].map((goal, index) => (
+            <div key={index} className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-gray-900">{goal.name}</span>
+                <span className="text-sm text-gray-600">
+                  ₦{goal.current.toLocaleString()} / ₦{goal.target.toLocaleString()}
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className={`${goal.color} h-2 rounded-full transition-all duration-500`}
+                  style={{ width: `${(goal.current / goal.target) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Recent Transactions */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="card"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+          <button className="text-primary-600 text-sm font-medium">View All</button>
+        </div>
+        
+        <div className="space-y-3">
+          {[
+            { type: 'deposit', amount: 25000, description: 'Monthly Savings', time: '2 hours ago' },
+            { type: 'goal', amount: 15000, description: 'Emergency Fund', time: '1 day ago' },
+            { type: 'deposit', amount: 50000, description: 'Salary Savings', time: '3 days ago' },
+          ].map((transaction, index) => (
+            <div key={index} className="flex items-center justify-between py-2">
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  transaction.type === 'deposit' ? 'bg-primary-100' : 'bg-blue-100'
+                }`}>
+                  {transaction.type === 'deposit' ? 
+                    <Wallet className="w-5 h-5 text-primary-600" /> :
+                    <Target className="w-5 h-5 text-blue-600" />
+                  }
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">{transaction.description}</p>
+                  <p className="text-sm text-gray-500">{transaction.time}</p>
+                </div>
+              </div>
+              <span className="font-semibold text-primary-600">
+                +₦{transaction.amount.toLocaleString()}
+              </span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+export default Dashboard;

@@ -3,9 +3,6 @@ import { motion } from 'framer-motion';
 import { 
   Lock, 
   Unlock, 
-  Calendar, 
-  Target, 
-  TrendingUp, 
   AlertCircle,
   Shield,
   Flame
@@ -30,22 +27,6 @@ const VaultCard: React.FC<VaultCardProps> = ({ goal, onBreakAttempt, onAddMoney 
     const deadline = new Date(goal.deadline);
     const diffTime = deadline.getTime() - today.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  };
-
-  const isUnlockable = () => {
-    const daysLeft = calculateDaysLeft();
-    const progress = calculateProgress();
-    
-    switch (goal.lock_type) {
-      case 'date':
-        return daysLeft <= 0;
-      case 'amount':
-        return progress >= 100;
-      case 'streak':
-        return false; // Streak-based unlocking handled elsewhere
-      default:
-        return false;
-    }
   };
 
   const getStreakDays = () => {

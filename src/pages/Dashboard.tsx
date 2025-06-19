@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { PlusCircle, TrendingUp, Target, Wallet, Eye, EyeOff, Shield, Bell } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { useAuth } from '../hooks/useAuth';
 import { useSavingsGoals } from '../hooks/useSavingsGoals';
 import { useTransactions } from '../hooks/useTransactions';
 import { useNotifications } from '../hooks/useNotifications';
 import { useChiefTightHand } from '../hooks/useChiefTightHand';
-import ChiefTightHand from '../components/ChiefTightHand';
-import SapaMeter from '../components/SapaMeter';
+
+// Lazy load heavy components
+const LineChart = React.lazy(() => import('recharts').then(module => ({ default: module.LineChart })));
+const Line = React.lazy(() => import('recharts').then(module => ({ default: module.Line })));
+const XAxis = React.lazy(() => import('recharts').then(module => ({ default: module.XAxis })));
+const YAxis = React.lazy(() => import('recharts').then(module => ({ default: module.YAxis })));
+const ResponsiveContainer = React.lazy(() => import('recharts').then(module => ({ default: module.ResponsiveContainer })));
+const ChiefTightHand = React.lazy(() => import('../components/ChiefTightHand'));
+const SapaMeter = React.lazy(() => import('../components/SapaMeter'));
 
 const Dashboard: React.FC = () => {
   const [showBalance, setShowBalance] = React.useState(true);
@@ -246,7 +252,9 @@ const Dashboard: React.FC = () => {
         transition={{ delay: 0.2 }}
         className="mb-6"
       >
-        <SapaMeter level={sapaLevel} />
+        <Suspense fallback={<div className="card h-32 animate-pulse bg-gray-200"></div>}>
+          <SapaMeter level={sapaLevel} />
+        </Suspense>
       </motion.div>
 
       {/* Quick Actions */}
@@ -279,19 +287,21 @@ const Dashboard: React.FC = () => {
             <span className="text-sm text-gray-500">Last 6 months</span>
           </div>
           <div className="h-48">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={savingsData}>
-                <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                <YAxis hide />
-                <Line 
-                  type="monotone" 
-                  dataKey="amount" 
-                  stroke="#22c55e" 
-                  strokeWidth={3}
-                  dot={{ fill: '#22c55e', strokeWidth: 2, r: 4 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <Suspense fallback={<div className="w-full h-full bg-gray-200 animate-pulse rounded"></div>}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={savingsData}>
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                  <YAxis hide />
+                  <Line 
+                    type="monotone" 
+                    dataKey="amount" 
+                    stroke="#22c55e" 
+                    strokeWidth={3}
+                    dot={{ fill: '#22c55e', strokeWidth: 2, r: 4 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </Suspense>
           </div>
         </motion.div>
       )}
@@ -397,12 +407,14 @@ const Dashboard: React.FC = () => {
       )}
 
       {/* Chief Tight-Hand Assistant */}
-      <ChiefTightHand
-        isVisible={isVisible}
-        message={currentMessage?.message || ''}
-        type={currentMessage?.type || 'reminder'}
-        onClose={hideMessage}
-      />
+      <Suspense fallback={null}>
+        <ChiefTightHand
+          isVisible={isVisible}
+          message={currentMessage?.message || ''}
+          type={currentMessage?.type || 'reminder'}
+          onClose={hideMessage}
+        />
+      </Suspense>
     </div>
   );
 };

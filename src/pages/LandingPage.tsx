@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Target, TrendingUp, Users, Lock, Smartphone } from 'lucide-react';
+import AuthModal from '../components/AuthModal';
 
-interface LandingPageProps {
-  onLogin: () => void;
-}
+const LandingPage: React.FC = () => {
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
-const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -41,7 +40,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={onLogin}
+                onClick={() => setShowAuthModal(true)}
                 className="bg-white text-primary-600 font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 Start Saving Today
@@ -179,7 +178,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={onLogin}
+              onClick={() => setShowAuthModal(true)}
               className="bg-white text-primary-600 font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
             >
               Get Started Now
@@ -187,6 +186,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           </motion.div>
         </div>
       </section>
+
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </div>
   );
 };

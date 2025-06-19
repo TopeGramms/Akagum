@@ -12,8 +12,19 @@ import {
   Edit,
   Camera
 } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import { useSavingsGoals } from '../hooks/useSavingsGoals';
 
 const Profile: React.FC = () => {
+  const { user, signOut } = useAuth();
+  const { goals } = useSavingsGoals(user?.id);
+
+  const handleSignOut = async () => {
+    if (confirm('Are you sure you want to sign out?')) {
+      await signOut();
+    }
+  };
+
   const menuItems = [
     {
       icon: User,
@@ -53,6 +64,11 @@ const Profile: React.FC = () => {
     }
   ];
 
+  const displayName = user?.user_metadata?.full_name || 'User';
+  const email = user?.email || '';
+  const joinDate = user?.created_at ? new Date(user.created_at) : new Date();
+  const monthsSaving = Math.floor((Date.now() - joinDate.getTime()) / (1000 * 60 * 60 * 24 * 30));
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       {/* Header */}
@@ -75,7 +91,9 @@ const Profile: React.FC = () => {
         <div className="flex items-center gap-4">
           <div className="relative">
             <div className="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">AB</span>
+              <span className="text-white font-bold text-2xl">
+                {displayName.charAt(0).toUpperCase()}
+              </span>
             </div>
             <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center border-2 border-gray-100">
               <Camera size={14} className="text-gray-600" />
@@ -84,12 +102,12 @@ const Profile: React.FC = () => {
           
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-xl font-bold text-gray-900">Adebayo Ogundimu</h2>
+              <h2 className="text-xl font-bold text-gray-900">{displayName}</h2>
               <button className="p-1 hover:bg-gray-100 rounded-lg transition-colors">
                 <Edit size={16} className="text-gray-600" />
               </button>
             </div>
-            <p className="text-gray-600 mb-2">adebayo@email.com</p>
+            <p className="text-gray-600 mb-2">{email}</p>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
               <span className="text-sm text-primary-600 font-medium">Verified Account</span>
@@ -106,11 +124,11 @@ const Profile: React.FC = () => {
         className="grid grid-cols-2 gap-4 mb-6"
       >
         <div className="card text-center">
-          <div className="text-2xl font-bold text-primary-600 mb-1">4</div>
+          <div className="text-2xl font-bold text-primary-600 mb-1">{goals.length}</div>
           <div className="text-sm text-gray-600">Active Goals</div>
         </div>
         <div className="card text-center">
-          <div className="text-2xl font-bold text-primary-600 mb-1">8</div>
+          <div className="text-2xl font-bold text-primary-600 mb-1">{Math.max(monthsSaving, 1)}</div>
           <div className="text-sm text-gray-600">Months Saving</div>
         </div>
       </motion.div>
@@ -145,6 +163,7 @@ const Profile: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
+        onClick={handleSignOut}
         className="w-full mt-6 card hover:shadow-md transition-all duration-200 flex items-center justify-center gap-3 p-4 text-red-600"
       >
         <LogOut size={20} />

@@ -15,7 +15,8 @@
     "react-router-dom": "^6.20.1",
     "lucide-react": "^0.294.0",
     "framer-motion": "^10.16.5",
-    "recharts": "^2.8.0"
+    "recharts": "^2.8.0",
+    "@supabase/supabase-js": "^2.38.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",

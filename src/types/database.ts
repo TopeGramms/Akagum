@@ -153,6 +153,125 @@ export interface Database {
           created_at?: string;
         };
       };
+      group_vaults: {
+        Row: {
+          id: string;
+          vault_name: string;
+          owner_id: string;
+          target_amount: number;
+          current_amount: number;
+          target_date: string;
+          description: string | null;
+          invite_code: string;
+          max_members: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          vault_name: string;
+          owner_id: string;
+          target_amount: number;
+          current_amount?: number;
+          target_date: string;
+          description?: string | null;
+          invite_code: string;
+          max_members?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          vault_name?: string;
+          owner_id?: string;
+          target_amount?: number;
+          current_amount?: number;
+          target_date?: string;
+          description?: string | null;
+          invite_code?: string;
+          max_members?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      vault_members: {
+        Row: {
+          id: string;
+          vault_id: string;
+          user_id: string;
+          amount_contributed: number;
+          joined_at: string;
+          is_active: boolean;
+        };
+        Insert: {
+          id?: string;
+          vault_id: string;
+          user_id: string;
+          amount_contributed?: number;
+          joined_at?: string;
+          is_active?: boolean;
+        };
+        Update: {
+          id?: string;
+          vault_id?: string;
+          user_id?: string;
+          amount_contributed?: number;
+          joined_at?: string;
+          is_active?: boolean;
+        };
+      };
+      vault_contributions: {
+        Row: {
+          id: string;
+          vault_id: string;
+          member_id: string;
+          amount: number;
+          description: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          vault_id: string;
+          member_id: string;
+          amount: number;
+          description?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          vault_id?: string;
+          member_id?: string;
+          amount?: number;
+          description?: string | null;
+          created_at?: string;
+        };
+      };
+      vault_comments: {
+        Row: {
+          id: string;
+          vault_id: string;
+          user_id: string;
+          message: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          vault_id: string;
+          user_id: string;
+          message: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          vault_id?: string;
+          user_id?: string;
+          message?: string;
+          created_at?: string;
+        };
+      };
     };
   };
 }
@@ -161,3 +280,17 @@ export type Profile = Database['public']['Tables']['profiles']['Row'];
 export type SavingsGoal = Database['public']['Tables']['savings_goals']['Row'];
 export type Transaction = Database['public']['Tables']['transactions']['Row'];
 export type Notification = Database['public']['Tables']['notifications']['Row'];
+export type GroupVault = Database['public']['Tables']['group_vaults']['Row'];
+export type VaultMember = Database['public']['Tables']['vault_members']['Row'];
+export type VaultContribution = Database['public']['Tables']['vault_contributions']['Row'];
+export type VaultComment = Database['public']['Tables']['vault_comments']['Row'];
+
+// Extended types with joined data
+export interface GroupVaultWithMembers extends GroupVault {
+  members: (VaultMember & { profile: Profile })[];
+  owner: Profile;
+}
+
+export interface VaultMemberWithProfile extends VaultMember {
+  profile: Profile;
+}

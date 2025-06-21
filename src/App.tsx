@@ -6,6 +6,7 @@ import { useAuth } from './hooks/useAuth';
 const LandingPage = React.lazy(() => import('./pages/LandingPage'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const SavingsGoals = React.lazy(() => import('./pages/SavingsGoals'));
+const GroupVaults = React.lazy(() => import('./pages/GroupVaults'));
 const Profile = React.lazy(() => import('./pages/Profile'));
 const Navigation = React.lazy(() => import('./components/Navigation'));
 
@@ -52,6 +53,19 @@ function App() {
                 user ? (
                   <div className="pb-20">
                     <SavingsGoals />
+                    <Navigation />
+                  </div>
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              } 
+            />
+            <Route 
+              path="/squad" 
+              element={
+                user ? (
+                  <div className="pb-20">
+                    <GroupVaults />
                     <Navigation />
                   </div>
                 ) : (

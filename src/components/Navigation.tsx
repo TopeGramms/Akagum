@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Target, User, PlusCircle } from 'lucide-react';
+import { Home, Target, User, PlusCircle, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Navigation: React.FC = () => {
@@ -11,6 +11,7 @@ const Navigation: React.FC = () => {
     { path: '/', icon: Home, label: 'Home' },
     { path: '/goals', icon: Target, label: 'Goals' },
     { path: '/add', icon: PlusCircle, label: 'Add', isSpecial: true },
+    { path: '/squad', icon: Users, label: 'Squad' },
     { path: '/profile', icon: User, label: 'Profile' },
   ];
 
